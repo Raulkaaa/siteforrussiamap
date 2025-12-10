@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Россия: Открой для себя | 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .subtagline {
+            opacity: 0.7;
+            font-size: 1rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 150px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .map-section {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            aspect-ratio: 2 / 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .city-marker {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: var(--secondary);
+            border: 3px solid var(--light);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse 2s infinite;
+            transition: all 0.3s ease;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        .city-name {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 20;
+            border: 1px solid var(--glass-border);
+            transform: translateX(-50%);
+            top: -45px;
+            left: 50%;
+        }
+
+        .city-marker:hover + .city-name {
+            opacity: 1;
+        }
+
+        .attractions-container {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .city-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .city-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .city-info {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .city-stat {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .back-button:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .attraction-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .attraction-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+        }
+
+        .attraction-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .attraction-card:hover .attraction-image img {
+            transform: scale(1.05);
+        }
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .attraction-info {
+            padding: 25px;
+        }
+
+        .attraction-name {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        .attraction-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .attraction-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 0;
+            margin-top: 80px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-text {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .map-container {
+                aspect-ratio: 1.5 / 1;
+            }
+
+            .attractions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .city-title {
+                font-size: 2rem;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+
+            .stat-item {
+                padding: 15px 20px;
+                min-width: 120px;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .attraction-image {
+                height: 180px;
+            }
+
+            .city-marker {
+                width: 18px;
+                height: 18px;
+                border: 2px solid var(--light);
+            }
+
+            .city-name {
+                font-size: 12px;
+                padding: 8px 12px;
+                top: -35px;
+            }
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            padding: 15px 50px 15px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .search-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.7;
+        }
+
+        .city-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .city-chip {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .city-chip:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">РОССИЯ: ОТКРОЙ ДЛЯ СЕБЯ</div>
+            <div class="tagline">Исследуй самую большую страну в мире</div>
+            <div class="subtagline">65 достопримечательностей в 23 городах</div>
+        </header>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">23</div>
+                <div class="stat-label">города</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">65</div>
+                <div class="stat-label">достопримечательности</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">11</div>
+                <div class="stat-label">часовых поясов</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">17.1M</div>
+                <div class="stat-label">км² территории</div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Введите название города или достопримечательности...">
+            <button class="search-button" id="searchButton">
+                <i class="fas fa-search"></i> Найти
+            </button>
+        </div>
+
+        <div class="city-list">
+            <div class="city-chip" data-city="moscow">Москва</div>
+            <div class="city-chip" data-city="saint-petersburg">Санкт-Петербург</div>
+            <div class="city-chip" data-city="kazan">Казань</div>
+            <div class="city-chip" data-city="sochi">Сочи</div>
+            <div class="city-chip" data-city="yekaterinburg">Екатеринбург</div>
+            <div class="city-chip" data-city="vladivostok">Владивосток</div>
+        </div>
+
+        <section class="map-section">
+            <div class="map-container" id="mapContainer">
+                <!-- ВАША КАРТА РОССИИ -->
+                <img src="https://grizly.club/uploads/posts/2022-12/1670148529_grizly-club-p-shablon-karta-rossii-16.png" class="map-image" alt="Карта России" id="russiaMap">
+
+                <!-- Маркеры городов с вашими позициями -->
+                <div class="city-marker" style="top: 43.166667%; left: 18.833333%;" data-city="moscow"></div>
+                <div class="city-name" style="top: 43.166667%; left: 18.833333%;">Москва</div>
+
+                <div class="city-marker" style="top: 30.166667%; left: 18.166667%;" data-city="saint-petersburg"></div>
+                <div class="city-name" style="top: 30.166667%; left: 18.166667%;">Санкт-Петербург</div>
+
+                <div class="city-marker" style="top: 52%; left: 23.416667%;" data-city="kazan"></div>
+                <div class="city-name" style="top: 52%; left: 23.416667%;">Казань</div>
+
+                <div class="city-marker" style="top: 64.333333%; left: 8.166667%;" data-city="sochi"></div>
+                <div class="city-name" style="top: 64.333333%; left: 8.166667%;">Сочи</div>
+
+                <div class="city-marker" style="top: 57.5%; left: 30.083333%;" data-city="yekaterinburg"></div>
+                <div class="city-name" style="top: 57.5%; left: 30.083333%;">Екатеринбург</div>
+
+                <div class="city-marker" style="top: 90%; left: 82.5%;" data-city="vladivostok"></div>
+                <div class="city-name" style="top: 90%; left: 82.5%;">Владивосток</div>
+
+                <div class="city-marker" style="top: 41%; left: 88.833333%;" data-city="petropavlovsk"></div>
+                <div class="city-name" style="top: 41%; left: 88.833333%;">Петропавловск-Камчатский</div>
+
+                <div class="city-marker" style="top: 54.833333%; left: 19.833333%;" data-city="volgograd"></div>
+                <div class="city-name" style="top: 54.833333%; left: 19.833333%;">Волгоград</div>
+                <div class="city-marker" style="top: 57%; left: 17.416667%;" data-city="samara"></div>
+                <div class="city-name" style="top: 57%; left: 17.416667%;">Самара</div>
+
+                <div class="city-marker" style="top: 57.166667%; left: 12.333333%;" data-city="rostov"></div>
+                <div class="city-name" style="top: 57.166667%; left: 12.333333%;">Ростов-на-Дону</div>
+
+                <div class="city-marker" style="top: 46.166667%; left: 21.333333%;" data-city="nizhny-novgorod"></div>
+                <div class="city-name" style="top: 46.166667%; left: 21.333333%;">Нижний Новгород</div>
+
+                <div class="city-marker" style="top: 23.737374%; left: 9.93266%;" data-city="kaliningrad"></div>
+                <div class="city-name" style="top: 23.737374%; left: 9.93266%;">Калининград</div>
+
+                <div class="city-marker" style="top: 70.166667%; left: 38.916667%;" data-city="novosibirsk"></div>
+                <div class="city-name" style="top: 70.166667%; left: 38.916667%;">Новосибирск</div>
+
+                <div class="city-marker" style="top: 70.166667%; left: 52.75%;" data-city="krasnoyarsk"></div>
+                <div class="city-name" style="top: 70.166667%; left: 52.75%;">Красноярск</div>
+
+                <div class="city-marker" style="top: 81.666667%; left: 57.583333%;" data-city="irkutsk"></div>
+                <div class="city-name" style="top: 81.666667%; left: 57.583333%;">Иркутск</div>
+
+                <div class="city-marker" style="top: 60.833333%; left: 24.416667%;" data-city="ufa"></div>
+                <div class="city-name" style="top: 60.833333%; left: 24.416667%;">Уфа</div>
+
+                <div class="city-marker" style="top: 46.333333%; left: 26.5%;" data-city="perm"></div>
+                <div class="city-name" style="top: 46.333333%; left: 26.5%;">Пермь</div>
+
+                <div class="city-marker" style="top: 51.333333%; left: 16.666667%;" data-city="voronezh"></div>
+                <div class="city-name" style="top: 51.333333%; left: 16.666667%;">Воронеж</div>
+
+                <div class="city-marker" style="top: 47.833333%; left: 73.333333%;" data-city="yakutsk"></div>
+                <div class="city-name" style="top: 47.833333%; left: 73.333333%;">Якутск</div>
+
+                <div class="city-marker" style="top: 18.166667%; left: 27.333333%;" data-city="murmansk"></div>
+                <div class="city-name" style="top: 18.166667%; left: 27.333333%;">Мурманск</div>
+
+                <div class="city-marker" style="top: 64.333333%; left: 28.5%;" data-city="chelyabinsk"></div>
+                <div class="city-name" style="top: 64.333333%; left: 28.5%;">Челябинск</div>
+
+                <div class="city-marker" style="top: 60%; left: 9.666667%;" data-city="krasnodar"></div>
+                <div class="city-name" style="top: 60%; left: 9.666667%;">Краснодар</div>
+
+                <div class="city-marker" style="top: 53.333333%; left: 5.666667%;" data-city="sevastopol"></div>
+                <div class="city-name" style="top: 53.333333%; left: 5.666667%;">Севастополь</div>
+            </div>
+        </section>
+
+        <div id="attractions-container" class="attractions-container"></div>
+
+        <footer>
+            <div class="footer-text">Интерактивная карта достопримечательностей России © 2025</div>
+            <div class="footer-text">Проект для 10 класса | 65 достопримечательностей в 23 городах</div>
+        </footer>
+    </div>
+<script>
+        // Полные данные о всех городах с ССЫЛКАМИ на изображения
+        const citiesData = {
+            "moscow": {
+                name: "Москва",
+                population: "12.6 млн",
+                founded: "1147 год",
+                attractions: [
+                    {
+                        name: "Красная площадь",
+                        description: "Главная площадь Москвы, архитектурный и исторический центр города. Здесь расположены Собор Василия Блаженного, Мавзолей Ленина, ГУМ и другие знаменитые сооружения.",
+                        image: "https://moskultura.ru/wp-content/uploads/2022/08/krasn_pl1-1140x668.jpg",
+                        icon: "🏛️",
+                        type: "Исторический памятник"
+                    },
+                    {
+                        name: "Московский Кремль",
+                        description: "Исторический укрепленный комплекс в центре Москвы, официальная резиденция Президента России. Включает дворцы, соборы и музеи с богатейшей историей.",
+                        image: "https://www.advantour.com/russia/images/moscow/moscow-kremlin1.jpg",
+                        icon: "🏰",
+                        type: "Архитектурный комплекс"
+                    },
+                    {
+                        name: "Останкинская телебашня",
+                        description: "Телевизионная и радиовещательная башня в Москве, высочайшее сооружение в Европе (540,1 м). На высоте 337 метров расположена смотровая площадка.",
+                        image: "https://останкинская-телебашня.рф/page_1/article/1.jpg",
+                        icon: "🗼",
+                        type: "Архитектурный памятник"
+                    }
+                ]
+            },
+            "saint-petersburg": {
+                name: "Санкт-Петербург",
+                population: "5.4 млн",
+                founded: "1703 год",
+                attractions: [
+                    {
+                        name: "Эрмитаж",
+                        description: "Один из крупнейших художественных музеев мира, расположенный в здании Зимнего дворца. Коллекция насчитывает около 3 миллионов произведений искусства.",
+                        image: "https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/826a29b4-9b30-4e1c-a81d-9b804adc3cbd/-/format/webp/-/quality/smart_retina/-/stretch/off/-/resize/1900x/-/format/webp/-/quality/smart_retina/-/stretch/off/-/resize/1900x/",
+                        icon: "🖼️",
+                        type: "Музей"
+                    },
+                    {
+                        name: "Петропавловская крепость",
+                        description: "Крепость в Санкт-Петербурге, расположенная на Заячьем острове, историческое ядро города. Здесь находится Петропавловский собор с усыпальницей российских императоров.",
+                        image: "https://resize.tripster.ru/0IFQ0y8yljcPpiDgmVy_r7nWiZw=/fit-in/1220x600/filters:no_upscale()/https://cdn.tripster.ru/photos/1146814d-617d-424a-9fd3-6e41c0b897c8.jpg",
+                        icon: "⛪",
+                        type: "Исторический памятник"
+                    },
+                    {
+                        name: "Исаакиевский собор",
+                        description: "Крупнейший православный храм Санкт-Петербурга, выдающийся образец позднего классицизма. Высота собора составляет 101,5 метра.",
+                        image: "https://ethnomir.ru/upload/medialibrary/bb0/sobor1.jpg",
+                        icon: "🕌",
+                        type: "Религиозный памятник"
+                    }
+                ]
+            },
+            "kazan": {
+                name: "Казань",
+                population: "1.3 млн",
+                founded: "1005 год",
+                attractions: [
+                    {
+                        name: "Казанский Кремль",
+                        description: "Главная достопримечательность Казани, объект Всемирного наследия ЮНЕСКО. Уникальный комплекс, где соседствуют православные храмы и мусульманские мечети.",
+                        image: "https://vasilevo.ru/wp-content/uploads/2020/02/vechernya-kazan-5.jpg",
+                        icon: "🕍",
+                        type: "Архитектурный комплекс"
+                    },
+                    {
+                        name: "Мечеть Кул-Шариф",
+                        description: "Главная джума-мечеть Республики Татарстан и Казани, расположенная на территории Казанского кремля. Одна из крупнейших мечетей в Европе.",
+                        image: "https://kuda-kazan.ru/uploads/335d618f1451af76a544069eefde8894.jpg",
+                        icon: "🕋",
+                        type: "Религиозный памятник"
+                    },
+                    {
+                        name: "Башня Сююмбике",
+                        description: "Дозорная башня в Казанском кремле, архитектурный символ Казани. Наклонная башня высотой 58 метров, похожая на Пизанскую башню.",
+                        image: "https://kaztur.ru/wp-content/uploads/2023/07/bashnya-syuyumbike-v-kazanskom-kremle-1024x731.jpg",
+                        icon: "🗼",
+                        type: "Архитектурный памятник"
+                    }
+                ]
+            },
+            "sochi": {
+                name: "Сочи",
+                population: "466 тыс",
+                founded: "1838 год",
+                attractions: [
+                    {
+                        name: "Олимпийский парк",
+                        description: "Прибрежный кластер олимпийских сооружений, построенный для зимних Олимпийских игр 2014 года. Включает стадионы, ледовые дворцы и парк развлечений.",
+                        image: "https://resize.tripster.ru/sojfH1jC1l17gdkV-f7-DF-e4vM=/fit-in/1220x600/filters:no_upscale()/https://cdn.tripster.ru/photos/b4e7e972-972a-42e2-897d-18aac2ec2b4b.jpg",
+                        icon: "⛷️",
+                        type: "Спортивный комплекс"
+                    },
+                    {
+                        name: "Дендрарий",
+                        description: "Знаменитый парк в Сочи, в котором собраны уникальные коллекции растений со всего мира. Площадь парка составляет 49 гектаров.",
+                        image: "https://ekskursii-v-sochi.ru/wp-content/uploads/2020/12/dendrariy-sochi-opisanie-i-ekskursii.jpg",
+                        icon: "🌳",
+                        type: "Парк"
+                    },
+                    {
+                        name: "Красная Поляна",
+                        description: "Горноклиматический курорт, расположенный в 39 км от побережья Чёрного моря. Популярное место для горнолыжного спорта и отдыха.",
+                        image: "https://krasnaya-polyana.sutochno.ru/doc/images/galleries/180/polyana1.jpg",
+                        icon: "🏔️",
+                        type: "Курорт"
+                    }
+                ]
+            },
+            "yekaterinburg": {
+                name: "Екатеринбург",
+                population: "1.5 млн",
+                founded: "1723 год",
+                attractions: [
+                    {
+                        name: "Храм на Крови",
+                        description: "Православный храм-памятник, построенный на месте дома Ипатьева, где был расстрелян Николай II и его семья. Один из самых посещаемых храмов России.",
+                        image: "https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/b1648eb8-4bd1-414c-add7-b806679770c3/-/format/webp/-/resize/1300x/",
+                        icon: "⛪",
+                        type: "Религиозный памятник"
+                    },
+                    {
+                        name: "Небоскрёб Высоцкий",
+                        description: "54-этажное здание в Екатеринбурге, самое высокое здание города (188,3 м). На 52-м этаже расположена смотровая площадка.",
+                        image: "https://hotel-senator.ru/upload/resize_cache/iblock/dbd/780_500_2/dbd008507691db6202ee6f79c9e5dc72.png",
+                        icon: "🏢",
+                        type: "Архитектурный памятник"
+                    },
+                    {
+                        name: "Плотинка",
+                        description: "Исторический центр Екатеринбурга, плотина городского пруда на реке Исеть. Любимое место прогулок горожан и гостей города.",
+                        image: "https://architectureguru.ru/wp-content/uploads/2019/04/plotinka-ekaterinburg-1.jpg",
+                        icon: "🌉",
+                        type: "Исторический памятник"
+                    }
+                ]
+            },
+            "vladivostok": {
+                name: "Владивосток",
+                population: "600 тыс",
+                founded: "1860 год",
+                attractions: [
+                    {
+                        name: "Золотой мост",
+                        description: "Вантовый мост через бухту Золотой Рог, один из самых больших вантовых мостов в мире. Символ современного Владивостока.",
+                        image: "https://resize.tripster.ru/AB36LTvTlwyeK_qzBsxEhwYFhF0=/fit-in/1220x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7772192b-e9fe-4f7e-a711-2e00e22a60ed.jpg",
+                        icon: "🌉",
+                        type: "Архитектурный памятник"
+                    },
+                    {
+                        name: "Владивостокская крепость",
+                        description: "Комплекс уникальных долговременных оборонительных сооружений, построенный в конце XIX - начале XX века. Один из самых мощных фортификационных комплексов мира.",
+                        image: "https://yougid.ru/media/img/22707/006aade1-a850-4094-97ad-33fb4e0d943d.jpeg",
+                        icon: "🏯",
+                        type: "Исторический памятник"
+                    },
+                    {
+                        name: "Остров Русский",
+                        description: "Остров в заливе Петра Великого Японского моря, соединённый с материком вантовым мостом. Здесь расположен кампус ДВФУ.",
+                        image: "https://primcult.ru/uploads/2a22c9c87a9fd460e6c3031037474f06_w640_h424_cx197_cy6_cw1255_ch859.jpg",
+                        icon: "🏝️",
+                        type: "Природный объект"
+                    }
+                ]
+            },
+            "petropavlovsk": {
+                name: "Петропавловск-Камчатский",
+                population: "180 тыс",
+                founded: "1740 год",
+                attractions: [
+                    {
+                        name: "Авачинская бухта",
+                        description: "Вторая по величине бухта в мире, способная принять любое судно мира. Одна из красивейших бухт на планете.",
+                        image: "https://cdn.kamchatkaland.ru/upload/images/putevoditel/avachinskaya-buxta/avachinskaja-buhta4.webp",
+                        icon: "🌊",
+                        type: "Природный объект"
+                    },
+                    {
+                        name: "Вулканы Камчатки",
+                        description: "На Камчатке насчитывается более 300 вулканов, 29 из которых являются действующими. Объект Всемирного наследия ЮНЕСКО.",
+                        image: "https://turclub-pik.ru/crop/1160/464/uploads/blog_img/covers/4df33c3e12266fc5930fc2940e5e2fcd.jpeg.webp",
+                        icon: "🌋",
+                        type: "Природный объект"
+                    },
+                    {
+                        name: "Долина гейзеров",
+                        description: "Одно из крупнейших гейзерных полей мира и единственное в Евразии. Уникальный природный заповедник.",
+                        image: "https://upload.wikimedia.org/wikipedia/commons/7/71/Долина_гейзеров_%282018%29.jpg",
+                        icon: "♨️",
+                        type: "Природный объект"
+                    }
+                ]
+            },
+            "volgograd": {
+                name: "Волгоград",
+                population: "1 млн",
+                founded: "1589 год",
+                attractions: [
+                    {
+                        name: "Мамаев курган",
+                        description: "Возвышенность на правом берегу Волги, где шли ожесточённые бои во время Сталинградской битвы. Главный мемориальный комплекс города.",
+                        image: "https://s12.stc.all.kpcdn.net/russia/wp-content/uploads/2020/05/mamaev-kurgan-1330-530x322.jpg",
+                        icon: "⚔️",
+                        type: "Исторический памятник"
+                    },
+                    {
+                        name: "Родина-мать зовёт!",
+                        description: "Монумент на Мамаевом кургане, одна из самых высоких статуй в мире (85 метров). Символ победы в Сталинградской битве.",
+                        image: "https://mamaev-hill.ru/files/publications/2020/12-202514-354-1snsxm9.tqc8.jpg",
+                        icon: "🗽",
+                        type: "Монумент"
+                    }
+                ]
+            },
+            "samara": {
+                name: "Самара",
+                population: "1.1 млн",
+                founded: "1586 год",
+                attractions: [
+                    {
+                        name: "Набережная Волги",
+                        description: "Одна из самых длинных и красивых набережных в России, протяженностью более 5 км. Любимое место отдыха горожан.",
+                        image: "https://komunavolge.ru/assets/uploads/gide/2025/June/naberezhnaya_Samara/DJI_0841.jpg",
+                        icon: "🌅",
+                        type: "Парк"
+                    },
+                    {
+                        name: "Жигулёвские горы",
+                        description: "Горный массив на правом берегу Волги, знаменитый своими живописными видами и уникальной природой.",
+                        image: "https://russpass.ru/event/_next/image?url=https%3A%2F%2Fcms.russpass.ru%2Fv1%2Ffile%2F66c70ec071ba2b29f6a24e0b&w=1920&q=75",
+                        icon: "⛰️",
+                        type: "Природный объект"
+                    }
+                ]
+            },
+            "rostov": {
+                name: "Ростов-на-Дону",
+                population: "1.1 млн",
+                founded: "1749 год",
+                attractions: [
+                    {
+                        name: "Набережная Дона",
+                        description: "Живописная набережная реки Дон, популярное место для прогулок и отдыха. Прекрасный вид на реку и мосты.",
+                        image: "https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/560d001f-443f-4dd2-9a1d-bcc8ae20ff76/-/format/webp/-/resize/1300x/",
+                        icon: "🚶",
+                        type: "Парк"
+                    },
+                    {
+                        name: "Театральная площадь",
+                        description: "Главная площадь города, на которой расположен Ростовский академический театр драмы. Центр культурной жизни города.",
+                        image: "https://ro.today/uploads/posts/2020-03/1585414868_5e3ab4d314c48827536844.jpg",
+                        icon: "🎭",
+                        type: "Архитектурный комплекс"
+                    }
+                ]
+            },
+            "nizhny-novgorod": {
+                name: "Нижний Новгород",
+                population: "1.2 млн",
+                founded: "1221 год",
+                attractions: [
+                    {
+                        name: "Нижегородский кремль",
+                        description: "Исторический центр города, крепость с 13 башнями, построенная в XVI веке. Отсюда открывается прекрасный вид на Стрелку.",
+                        image: "https://i3.gipernn.ru/3lrr9s08258y3_7v1flu.jpeg",
+                        icon: "🏰",
+                        type: "Исторический памятник"
+                    },
+                    {
+                        name: "Чкаловская лестница",
+                        description: "Одна из самых длинных лестниц в России, соединяющая Верхне-Волжскую и Нижне-Волжскую набережные. Символ города.",
+                        image: "https://kamerata.org/wp-content/uploads/Lestnitsa.jpg",
+                        icon: "🪜",
+                        type: "Архитектурный памятник"
+                    }
+                ]
+            },
+            "kaliningrad": {
+                name: "Калининград",
+                population: "490 тыс",
+                founded: "1255 год",
+                attractions: [
+                    {
+                        name: "Кафедральный собор",
+                        description: "Готический собор XIV века на острове Канта, символ Калининграда. Рядом находится могила философа Иммануила Канта.",
+                        image: "https://zabroshki39.ru/upload/information_system_16/1/2/7/item_1279/information_items_property_5202.jpg",
+                        icon: "⛪",
+                        type: "Религиозный памятник"
+                    },
+                    {
+                        name: "Музей Мирового океана",
+                        description: "Уникальный музей, посвященный изучению Мирового океана, с настоящими кораблями, подводными аппаратами и аквариумами.",
+                        image: "https://aif-s3.aif.ru/images/006/632/2ddefe0606dcd892803b4ea9ae1af425.jpg",
+                        icon: "🐠",
+                        type: "Музей"
+                    }
+                ]
+            },
+            "novosibirsk": {
+                name: "Новосибирск",
+                population: "1.6 млн",
+                founded: "1893 год",
+                attractions: [
+                    {
+                        name: "Новосибирский театр оперы и балета",
+                        description: "Крупнейший театр России, символ Новосибирска. Известен своей уникальной архитектурой и богатым репертуаром.",
+                        image: "https://daichi.ru/upload/iblock/954/yatk97gms8yhm1s0m73expxge3h4iqu3/1.jpg",
+                        icon: "🎭",
+                        type: "Архитектурный памятник"
+                    },
+                    {
+                        name: "Первый железнодорожный мост через Обь",
+                        description: "Памятник инженерного искусства, построенный в 1897 году. С него началась история Транссибирской магистрали.",
+                        image: "https://cdnstatic.rg.ru/crop980x654/uploads/images/194/74/56/Satryj_most_v_Barnaule.jpg",
+                        icon: "🌉",
+                        type: "Исторический памятник"
+                    }
+                ]
+            },
+            "krasnoyarsk": {
+                name: "Красноярск",
+                population: "1.1 млн",
+                founded: "1628 год",
+                attractions: [
+                    {
+                        name: "Часовня Параскевы Пятницы",
+                        description: "Символ Красноярска, расположенный на Караульной горе. Отсюда открывается панорамный вид на город и Енисей.",
+                        image: "https://www.krinfo.ru/content/upload/kr2.jpg",
+                        icon: "⛪",
+                        type: "Религиозный памятник"
+                    },
+                    {
+                        name: "Заповедник Столбы",
+                        description: "Уникальный природный заповедник с причудливыми скальными образованиями. Популярное место для скалолазания и отдыха.",
+                        image: "https://static.insales-cdn.com/files/1/7532/8756588/original/e75ba6a50a27e828e59aa1400fe22a5b-960_9b7b79031300f98e5ce57a7486384d3b.jpg",
+                        icon: "🧗",
+                        type: "Природный объект"
+                    }
+                ]
+            },
+            "irkutsk": {
+                name: "Иркутск",
+                population: "620 тыс",
+                founded: "1661 год",
+                attractions: [
+                    {
+                        name: "Озеро Байкал",
+                        description: "Самое глубокое озеро в мире, объект Всемирного наследия ЮНЕСКО. Уникальная экосистема и невероятная природа.",
+                        image: "https://ubook.ru/uploads/picture/pic/917706/big_3636081210_2c59762ccf_o__1_.jpg",
+                        icon: "🏞️",
+                        type: "Природный объект"
+                    },
+                    {
+                        name: "130-й квартал (Иркутская слобода)",
+                        description: "Исторический квартал с отреставрированными деревянными домами XIX века. Музей под открытым небом.",
+                        image: "https://bereg-angary.ru/images/blog/130-kw_77.jpg",
+                        icon: "🏘️",
+                        type: "Исторический памятник"
+                    }
+                ]
+            },
+            "ufa": {
+                name: "Уфа",
+                population: "1.1 млн",
+                founded: "1574 год",
+                attractions: [
+                    {
+                        name: "Монумент Дружбы",
+                        description: "Памятник, символизирующий 400-летие добровольного присоединения Башкирии к России. Высота монумента - 35 метров.",
+                        image: "https://museum-ufa.ru/wp-content/uploads/2024/03/01-monument-druzhby-1024x576.jpg",
+                        icon: "🤝",
+                        type: "Монумент"
+                    },
+                    {
+                        name: "Мечеть Ляля-Тюльпан",
+                        description: "Одна из самых красивых мечетей России, построенная в виде распускающегося тюльпана. Религиозный и культурный центр.",
+                        image: "https://www.culture.ru/_next/image?url=https%3A%2F%2Fcdn.culture.ru%2Fc%2F561901.884x442.jpg&w=1024&q=75",
+                        icon: "🕌",
+                        type: "Религиозный памятник"
+                    }
+                ]
+            },
+            "perm": {
+                name: "Пермь",
+                population: "1 млн",
+                founded: "1723 год",
+                attractions: [
+                    {
+                        name: "Пермская художественная галерея",
+                        description: "Один из богатейших художественных музеей России, известный коллекцией пермской деревянной скульптуры.",
+                        image: "https://iy.kommersant.ru/Issues.photo/REGIONS/PERM_News/2022/03/11/KPE_003603_00100_1_t245_150555.webp",
+                        icon: "🖼️",
+                        type: "Музей"
+                    },
+                    {
+                        name: "Набережная Камы",
+                        description: "Живописная набережная реки Камы, популярное место для прогулок с красивыми видами на реку и мосты.",
+                        image: "https://russpass.ru/event/_next/image?url=https%3A%2F%2Fcms.russpass.ru%2Fv1%2Ffile%2F65254bad2faec1be58a4c2ad&w=1920&q=75",
+                        icon: "🚶",
+                        type: "Парк"
+                    }
+                ]
+            },
+            "voronezh": {
+                name: "Воронеж",
+                population: "1.1 млн",
+                founded: "1586 год",
+                attractions: [
+                    {
+                        name: "Корабль-музей «Гото Предестинация»",
+                        description: "Копия линейного корабля времен Петра I, первого российского линкора. Музей истории военно-морского флота.",
+                        image: "https://hdpic.club/uploads/posts/2022-01/1642930724_4-hdpic-club-p-korablya-goto-predestinatsiya-7.jpg",
+                        icon: "🚢",
+                        type: "Музей"
+                    },
+                    {
+                        name: "Петровский сквер",
+                        description: "Центральный сквер города с памятником Петру I. Историческое место, связанное с созданием российского флота.",
+                        image: "https://avatars.mds.yandex.net/get-altay/1970665/2a0000017472aadbcc503a3b1c13b1c88126/XXXL",
+                        icon: "👑",
+                        type: "Исторический памятник"
+                    }
+                ]
+            },
+            "yakutsk": {
+                name: "Якутск",
+                population: "330 тыс",
+                founded: "1632 год",
+                attractions: [
+                    {
+                        name: "Музей мамонта",
+                        description: "Уникальный музей, посвященный мамонтовой фауне. Здесь хранится единственный в мире полный скелет мамонта.",
+                        image: "https://yamal-media.ru/images/insecure/rs:fill-down:1080:608/aHR0cHM6Ly9zdG9yYWdlLnlhbmRleGNsb3VkLm5ldC95bS1zaXRlcy1zdGF0aWMvNWY0YmZhZGYtODY1LndlYnA.webp",
+                        icon: "🦣",
+                        type: "Музей"
+                    },
+                    {
+                        name: "Царство вечной мерзлоты",
+                        description: "Туристический комплекс в естественной пещере вечной мерзлоты. Температура внутри круглый год составляет -10°C.",
+                        image: "https://сделановякутии.рф/upload/resize_cache/iblock/41b/900_900_0/9e3vwvnu1qx69xk5pf67aghdlz5fjxql.jpg",
+                        icon: "🧊",
+                        type: "Природный объект"
+                    }
+                ]
+            },
+            "murmansk": {
+                name: "Мурманск",
+                population: "270 тыс",
+                founded: "1916 год",
+                attractions: [
+                    {
+                        name: "Атомный ледокол «Ленин»",
+                        description: "Первый в мире атомный ледокол, ныне музей. Символ освоения Арктики и развития атомного флота.",
+                        image: "https://goarctic.ru/upload/iblock/866/866ce491aa6aab51d7c74a6142f30bf7.jpg",
+                        icon: "🚢",
+                        type: "Музей"
+                    },
+                    {
+                        name: "Мемориал «Защитникам Советского Заполярья»",
+                        description: "Памятник солдатам Великой Отечественной войны, известный как «Алёша». Высота монумента - 35,5 метров.",
+                        image: "https://visitmurmansk.info/wp-content/uploads/2020/04/25-1.jpg",
+                        icon: "🪖",
+                        type: "Мемориал"
+                    }
+                ]
+            },
+            "chelyabinsk": {
+                name: "Челябинск",
+                population: "1.2 млн",
+                founded: "1736 год",
+                attractions: [
+                    {
+                        name: "Площадь Революции",
+                        description: "Центральная площадь города с памятником В.И. Ленину. Главная площадка для городских мероприятий.",
+                        image: "https://upload.wikimedia.org/wikipedia/ru/thumb/6/6d/Площадь_Революции_в_Челябинске_%282008%29.JPG/960px-Площадь_Революции_в_Челябинске_%282008%29.JPG?20100826022747",
+                        icon: "🏛️",
+                        type: "Архитектурный комплекс"
+                    },
+                    {
+                        name: "Челябинский краеведческий музей",
+                        description: "Один из крупнейших музеев Урала с богатой коллекцией археологических, исторических и природных экспонатов.",
+                        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Museum_in_Chelyabinsk.jpg/330px-Museum_in_Chelyabinsk.jpg",
+                        icon: "🏛️",
+                        type: "Музей"
+                    }
+                ]
+            },
+            "krasnodar": {
+                name: "Краснодар",
+                population: "1.1 млн",
+                founded: "1793 год",
+                attractions: [
+                    {
+                        name: "Памятник Екатерине Великой",
+                        description: "Восстановленный памятник основательнице города. Один из символов Краснодара и кубанского казачества.",
+                        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Monument_to_Catherine_II_in_SPB.jpg/330px-Monument_to_Catherine_II_in_SPB.jpg",
+                        icon: "👑",
+                        type: "Монумент"
+                    },
+                    {
+                        name: "Красная улица",
+                        description: "Главная улица города, пешеходная зона с историческими зданиями, магазинами и ресторанами.",
+                        image: "https://kr123.ru/wp-content/uploads/2022/07/Gorod-Krasnodar-ulica-Krasnaya.jpeg",
+                        icon: "🛍️",
+                        type: "Архитектурный комплекс"
+                    }
+                ]
+            },
+            "sevastopol": {
+                name: "Севастополь",
+                population: "510 тыс",
+                founded: "1783 год",
+                attractions: [
+                    {
+                        name: "Херсонес Таврический",
+                        description: "Древнегреческий город-государство, объект Всемирного наследия ЮНЕСКО. Место крещения князя Владимира.",
+                        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Chersonesos_ruins.jpg/330px-Chersonesos_ruins.jpg",
+                        icon: "🏛️",
+                        type: "Исторический памятник"
+                    },
+                    {
+                        name: "Памятник затопленным кораблям",
+                        description: "Символ Севастополя, установленный в память о кораблях, затопленных в 1854-1855 годах для защиты города.",
+                        image: "https://lh7-us.googleusercontent.com/CbHT9909AibiWb1A5kQ5cLL3xI0EljYQUFmBeKNWlAYVP0YITnu9i792ZZWzMDYrX3JBjx9T9bkPPN5wv3P9GiTB38eDE_z09kZHBghoqd3vV0vksXd54vG9K9Dv1dVo2_5VpNBVCPZqGA13C2YSBbo",
+                        icon: "⛵",
+                        type: "Монумент"
+                    }
+                ]
+            }
+        };
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Поиск
+            document.getElementById('searchButton').addEventListener('click', performSearch);
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+
+            // Быстрый выбор городов
+            document.querySelectorAll('.city-chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    const cityId = this.getAttribute('data-city');
+                    showAttractions(cityId);
+                });
+            });
+
+            // Обработчики для маркеров
+            document.querySelectorAll('.city-marker').forEach(marker => {
+                marker.addEventListener('click', function() {
+                    const cityId = this.getAttribute('data-city');
+                    showAttractions(cityId);
+                });
+            });
+        }
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const container = document.getElementById('attractions-container');
+
+            if (!searchTerm) {
+                container.innerHTML = '<div class="no-results"><h2>Введите поисковый запрос</h2></div>';
+                container.style.display = 'block';
+                return;
+            }
+
+            let foundCity = null;
+            for (const [cityId, cityData] of Object.entries(citiesData)) {
+                // Поиск по названию города
+                if (cityData.name.toLowerCase().includes(searchTerm)) {
+                    foundCity = cityId;
+                    break;
+                }
+                // Поиск по достопримечательностям
+                for (const attraction of cityData.attractions) {
+                    if (attraction.name.toLowerCase().includes(searchTerm) ||
+                        attraction.description.toLowerCase().includes(searchTerm) ||
+                        attraction.type.toLowerCase().includes(searchTerm)) {
+                        foundCity = cityId;
+                        break;
+                    }
+                }
+
+                if (foundCity) break;
+            }
+
+            if (foundCity) {
+                showAttractions(foundCity);
+            } else {
+                container.innerHTML = `
+                    <div class="back-button" onclick="hideAttractions()"><i class="fas fa-arrow-left"></i> Назад к карте</div>
+                    <div class="no-results">
+                        <h2>Ничего не найдено</h2>
+                        <p>Попробуйте изменить запрос или выберите город на карте</p>
+                    </div>
+                `;
+                container.style.display = 'block';
+                container.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function showAttractions(cityId) {
+            const container = document.getElementById('attractions-container');
+            const cityData = citiesData[cityId];
+
+            if (!cityData) {
+                container.innerHTML = `<div class="back-button" onclick="hideAttractions()"><i class="fas fa-arrow-left"></i> Назад к карте</div>
+                                      <h2 class="city-title">Информация о городе временно недоступна</h2>`;
+                container.style.display = 'block';
+                container.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            // Создаем HTML для достопримечательностей
+            let attractionsHTML = `
+                <div class="back-button" onclick="hideAttractions()"><i class="fas fa-arrow-left"></i> Назад к карте</div>
+                <div class="city-header">
+                    <h2 class="city-title">${cityData.name}</h2>
+                    <div class="city-info">
+                        <div class="city-stat"><i class="fas fa-users"></i> Население: ${cityData.population}</div>
+                        <div class="city-stat"><i class="fas fa-calendar"></i> Основан: ${cityData.founded}</div>
+                        <div class="city-stat"><i class="fas fa-landmark"></i> Достопримечательности: ${cityData.attractions.length}</div>
+                    </div>
+                </div>
+                <div class="attractions-grid">
+            `;
+
+            cityData.attractions.forEach(attraction => {
+                // Проверяем, есть ли изображение
+                const imageHTML = attraction.image
+                    ? `<img src="${attraction.image}" alt="${attraction.name}" onerror="this.parentElement.innerHTML='<div class=\"image-placeholder\">${attraction.icon}</div>'">`
+                    : `<div class="image-placeholder">${attraction.icon}</div>`;
+
+                attractionsHTML += `
+                    <div class="attraction-card">
+                        <div class="attraction-image">
+                            ${imageHTML}
+                        </div>
+                        <div class="attraction-info">
+                            <h3 class="attraction-name">${attraction.name}</h3>
+                            <p class="attraction-description">${attraction.description}</p>
+                            <div class="attraction-meta">
+                                <span><i class="fas fa-tag"></i> ${attraction.type}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            attractionsHTML += `</div>`;
+
+            container.innerHTML = attractionsHTML;
+            container.style.display = 'block';
+
+            // Прокручиваем страницу к достопримечательностям
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideAttractions() {
+            document.getElementById('attractions-container').style.display = 'none';
+            document.getElementById('searchInput').value = '';
+        }
+    </script>
+</body>
+</html>
