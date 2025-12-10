@@ -1,2 +1,0 @@
-# siteforrussiamap
-russiamap
