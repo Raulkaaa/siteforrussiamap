@@ -268,7 +268,7 @@
 
         .attraction-image {
             width: 100%;
-            height: 200px;
+            height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -281,12 +281,14 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
             transition: transform 0.5s ease;
         }
 
         .attraction-card:hover .attraction-image img {
             transform: scale(1.05);
         }
+        
         .image-placeholder {
             width: 100%;
             height: 100%;
@@ -366,7 +368,7 @@
             }
 
             .attraction-image {
-                height: 180px;
+                height: 200px;
             }
 
             .city-marker {
@@ -977,7 +979,7 @@
                 attractions: [
                     {
                         name: "Пермская художественная галерея",
-                        description: "Один из богатейших художественных музеей России, известный коллекцией пермской деревянной скульптуры.",
+                        description: "Один из богатейших художественных музеев России, известный коллекцией пермской деревянной скульптуры.",
                         image: "https://iy.kommersant.ru/Issues.photo/REGIONS/PERM_News/2022/03/11/KPE_003603_00100_1_t245_150555.webp",
                         icon: "🖼️",
                         type: "Музей"
@@ -1220,25 +1222,40 @@
             `;
 
             cityData.attractions.forEach(attraction => {
-                // Проверяем, есть ли изображение
-                const imageHTML = attraction.image
-                    ? `<img src="${attraction.image}" alt="${attraction.name}" onerror="this.parentElement.innerHTML='<div class=\"image-placeholder\">${attraction.icon}</div>'">`
-                    : `<div class="image-placeholder">${attraction.icon}</div>`;
-
-                attractionsHTML += `
-                    <div class="attraction-card">
-                        <div class="attraction-image">
-                            ${imageHTML}
-                        </div>
-                        <div class="attraction-info">
-                            <h3 class="attraction-name">${attraction.name}</h3>
-                            <p class="attraction-description">${attraction.description}</p>
-                            <div class="attraction-meta">
-                                <span><i class="fas fa-tag"></i> ${attraction.type}</span>
+                // Простая проверка: если нет изображения - показываем иконку
+                // Если есть изображение - пробуем загрузить, при ошибке показываем иконку
+                if (!attraction.image) {
+                    attractionsHTML += `
+                        <div class="attraction-card">
+                            <div class="attraction-image">
+                                <div class="image-placeholder">${attraction.icon}</div>
+                            </div>
+                            <div class="attraction-info">
+                                <h3 class="attraction-name">${attraction.name}</h3>
+                                <p class="attraction-description">${attraction.description}</p>
+                                <div class="attraction-meta">
+                                    <span><i class="fas fa-tag"></i> ${attraction.type}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                } else {
+                    attractionsHTML += `
+                        <div class="attraction-card">
+                            <div class="attraction-image">
+                                <img src="${attraction.image}" alt="${attraction.name}" 
+                                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'image-placeholder\'>${attraction.icon}</div>';">
+                            </div>
+                            <div class="attraction-info">
+                                <h3 class="attraction-name">${attraction.name}</h3>
+                                <p class="attraction-description">${attraction.description}</p>
+                                <div class="attraction-meta">
+                                    <span><i class="fas fa-tag"></i> ${attraction.type}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
             });
 
             attractionsHTML += `</div>`;
